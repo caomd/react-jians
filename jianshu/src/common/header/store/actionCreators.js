@@ -5,7 +5,8 @@ import { fromJS } from 'immutable';
 import { constants } from './';
 const getListItem = (list) => ({
   type: constants.GETLISTITEM,
-  list: fromJS(list)
+  list: fromJS(list),
+  totalPage: fromJS(Math.ceil(list.length/10))
 });
 const changeInputFocused = () => ({
   type: constants.CHANGE_INPUT_FOCUSED
@@ -22,5 +23,17 @@ const getList = () => {
       console.log('error');
     })
   }
-}
-export {changeInputFocused, changInputBlur, getList};
+};
+const mouseEnter = () => ({
+  type: constants.MOUSE_ENTER
+});
+const mouseLeave = () => ({
+  type: constants.MOUSE_LEAVE
+});
+const handleSwitch = (page, rotateIcon) => ({
+  type: constants.CHANGE_SWITCH,
+  page,
+  rotateIcon
+
+});
+export {changeInputFocused, changInputBlur, getList, mouseEnter, mouseLeave, handleSwitch};

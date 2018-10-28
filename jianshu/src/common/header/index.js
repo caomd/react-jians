@@ -83,21 +83,40 @@ import {
 // }
 class Header extends Component{
   getSearchItem = () => {
-    const {focused, list} = this.props;
-    if(focused) {
+    const {focused, list, page, rotateIcon, totalPage, mouseEnter, mouseIn, mouseLeave, handleSwitch} = this.props;
+    const pageList = [];
+    const newList = list.toJS();
+    //let lastPage = (page-1) * 10 + newList.length-(totalPage-1)*10;
+    // if(page !== totalPage){
+    //   for(let i = (page - 1) * 10; i < page * 10; i++){
+    //     pageList.push(<SearchItem key={i}>{newList[i]}</SearchItem>);
+    //   }
+    // }else{
+    //   for(let i = (page - 1) * 10; i < lastPage; i++){
+    //     pageList.push(<SearchItem key={i}>{newList[i]}</SearchItem>);
+    //   }
+    // }
+    for(let i = (page - 1) * 10; i < page * 10; i++){
+      if(newList[i]!==undefined){
+        pageList.push(<SearchItem key={i}>{newList[i]}</SearchItem>);
+      }
+      // console.log(newList[i]);
+      // pageList.push(<SearchItem key={i}>{newList[i]}</SearchItem>);
+    }
+    if(focused || mouseIn) {
       return (
-        <SearchInfo>
+        <SearchInfo onMouseEnter={mouseEnter}
+                    onMouseLeave={mouseLeave}>
           <SeachInfoTitle>
             热门搜索
-            <SearchSwitch>换一批</SearchSwitch>
+            <SearchSwitch rotateIcon = {{rotateIcon: rotateIcon}} onClick={() => handleSwitch(page, totalPage, rotateIcon)}>
+              <i ref={(spin) => {this.spinIcon = spin}} className="iconfont spin">&#xe705;</i>
+              换一批
+            </SearchSwitch>
           </SeachInfoTitle>
           <SearchList>
             {
-              list.map((item, index) => {
-                return(
-                  <SearchItem key={index}>{item}</SearchItem>
-                  )
-              })
+              pageList
             }
           </SearchList>
         </SearchInfo>
@@ -107,8 +126,7 @@ class Header extends Component{
     }
   };
   render() {
-    const {focused,handleInputFocus,handleInputBlur,list} = this.props;
-    console.log(list);
+    const {focused,list, handleInputFocus,handleInputBlur} = this.props;
     return (
       <HeaderWrapper>
         <Logo/>
@@ -122,12 +140,12 @@ class Header extends Component{
               classNames="slide"
             >
               <NavInput className={focused ? 'focus' : ''}
-                        onFocus={handleInputFocus}
+                        onFocus={() => handleInputFocus(list)}
                         onBlur={handleInputBlur}>
 
               </NavInput>
             </CSSTransition>
-            <i className={focused ? 'focus iconfont' : 'iconfont'}>&#xe64d;</i>
+            <i className={focused ? 'focus iconfont zoom' : 'iconfont zoom'}>&#xe64d;</i>
             {
               this.getSearchItem()
             }
@@ -156,19 +174,50 @@ const mapStateToProps = (state) => ({
   //focused: state.get('header').get('focused')
   //5
   focused: state.getIn(['header', 'focused']),
-  list: state.getIn(['header','list'])
+  list: state.getIn(['header','list']),
+  page: state.getIn(['header','page']),
+  totalPage: state.getIn(['header','totalPage']),
+  mouseIn: state.getIn(['header', 'mouseIn']),
+  rotateIcon: state.getIn(['header', 'rotateIcon'])
   //}
 });
 const mapDispatchToProps = (dispatch) => ({
   //return {
-    handleInputFocus(){
-      dispatch(actionCreators.getList());
+    handleInputFocus(list){
+      // if(list.size === 0) {
+      //   dispatch(actionCreators.getList());
+      // }
+      (list.size === 0) && dispatch(actionCreators.getList());
       dispatch(actionCreators.changeInputFocused());
     },
     handleInputBlur(){
       const action = actionCreators.changInputBlur();
       dispatch(action);
-    }
+    },
+  mouseEnter(){
+      const action = actionCreators.mouseEnter();
+      dispatch(action);
+  },
+  mouseLeave() {
+    const action = actionCreators.mouseLeave();
+    dispatch(action);
+  },
+  handleSwitch(page, totalPage, rotateIcon) {
+      //console.log(rotateIcon);
+      //  let originAngle = spin.style.transform.replace(/[^0-9]/ig, '');
+      // if(originAngle) {
+      //   originAngle = parseInt(originAngle, 10);
+      // }else{
+      //   originAngle = 0;
+      // }
+      // spin.style.transform = 'rotate(' + (originAngle + 360) + 'deg';
+      rotateIcon = rotateIcon + 360;
+      if(page < totalPage) {
+        dispatch(actionCreators.handleSwitch(page+1, rotateIcon));
+      }else{
+        dispatch(actionCreators.handleSwitch(1, rotateIcon));
+      }
+  }
   //}
 })
 export default  connect (mapStateToProps,mapDispatchToProps)(Header);
