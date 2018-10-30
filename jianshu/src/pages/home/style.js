@@ -91,6 +91,12 @@ export const RecommendsItem = styled.div`
     }
   }
 `;
+export const RecommendList = styled.div`
+  width: 280px;
+  height: 50px;
+  background: url(${props => props.imgUrl});
+  background-size: 100%;
+`;
 export const RecommendDown = styled.div`
   overflow: hidden;
   border: 1px solid #dcdcdc;
@@ -146,4 +152,15 @@ export const RecommendQrcode = styled.div`
     width: 140px;
     height: 140px;
   }
+`;
+export const LoadMore = styled.div`
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  margin: 30px 0;
+  text-align: center;
+  border-radius: 20px;
+  background: #a5a5a5;
+  color: #fff;
+  cursor: pointer;
 `;

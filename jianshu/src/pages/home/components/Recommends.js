@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {actionCreators} from '../store';
 import {
-  RecommendsItem,
+ // RecommendsItem,
   RecommendDown,
   RecommendInfo,
-  RecommendQrcode
+  RecommendQrcode,
+  RecommendList
 }
 from '../style'
 class Recommends extends Component{
@@ -25,13 +26,19 @@ class Recommends extends Component{
     const { list, onMouseEnter } = this.props;
     return(
       <div>
-        <RecommendsItem>
-          {
-            list.map((item) => (
-              <img className="rec-img" alt="" key={item} src={item.get('imgUrl')}/>
-            ))
-          }
-        </RecommendsItem>
+        {/*<RecommendsItem>*/}
+          {/*{*/}
+            {/*list.map((item) => (*/}
+              {/*<img className="rec-img" alt="" key={item} src={item.get('imgUrl')}/>*/}
+            {/*))*/}
+          {/*}*/}
+        {/*</RecommendsItem>*/}
+        {
+          list.map((item) => (
+          <RecommendList key={item.get('id')} imgUrl={item.get('imgUrl')}/>
+           )
+          )
+        }
         <RecommendDown>
           <img className="down-img" src="//cdn2.jianshu.io/assets/web/download-index-side-qrcode-cb13fc9106a478795f8d10f9f632fccf.png" alt="Download index side qrcode" />
           <RecommendInfo onMouseEnter={onMouseEnter}>

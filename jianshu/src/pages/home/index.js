@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import {List, Recommends, Writer, Topic} from './components/index'
+import { connect } from 'react-redux';
+import {List, Recommends, Writer, Topic} from './components/index';
+import { actionCreators } from './store'
 import {
   HomeWrapper,
   HomeLeft,
@@ -24,5 +26,14 @@ class Home extends Component{
       </HomeWrapper>
     )
   }
+componentDidMount() {
+  this.props.getHomeList();
 }
-export default Home;
+}
+const mapDispatchProps = (dispatch) => ({
+  getHomeList() {
+    const action = actionCreators.changeList();
+    dispatch(action);
+  }
+});
+export default connect(null, mapDispatchProps)(Home);
