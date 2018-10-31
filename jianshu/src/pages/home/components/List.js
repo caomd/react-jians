@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { actionCreators } from '../store'
 import {
   ListItem,
@@ -14,7 +15,8 @@ class List extends Component{
       <div>
         {
           articleList.map((item, index) => (
-            <ListItem key={index}>
+            <Link to="/detail"  key={index}>
+            <ListItem>
               {
                 item.get('imgUrl')!==''?
                   <img className="list-img" alt="listTitle"
@@ -27,6 +29,7 @@ class List extends Component{
                 <p className="desc">{item.get('desc')}</p>
               </ListInfo>
             </ListItem>
+            </Link>
           ))
         }
         <LoadMore onClick={() => getLoadMoreList(listPage)}>更多文字</LoadMore>
@@ -40,7 +43,6 @@ const mapState = (state) => ({
 });
 const mapDispatchProps = (dispatch) => ({
   getLoadMoreList(listPage){
-    console.log(listPage);
     dispatch(actionCreators.getMoreList(listPage));
   }
 });

@@ -5,7 +5,8 @@ const defaultVal = fromJS({
   topicList: [],
   articleList: [],
   recommendList:[],
-  listPage:1
+  listPage:1,
+  showScroll:false
 });
 const reducer = (state=defaultVal, action) => {
   switch (action.type) {
@@ -22,6 +23,8 @@ const reducer = (state=defaultVal, action) => {
         listPage: action.listPage,
         articleList: state.get('articleList').concat(action.list)
       });
+    case constants.CHANGE_SHOW_SCROLL:
+      return state.set('showScroll',action.bool);
     default:
       return state;
   }

@@ -31,4 +31,8 @@ const getMoreList = (listPage) => {
     }).catch((error) => {console.log(error)});
   }
 };
-export {getPrCode, changeList, getMoreList};
+const toggleShowScroll = (bool) => ({
+  type: constants.CHANGE_SHOW_SCROLL,
+  bool
+});
+export {getPrCode, changeList, getMoreList, toggleShowScroll};
