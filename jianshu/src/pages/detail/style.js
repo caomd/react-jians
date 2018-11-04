@@ -42,6 +42,6 @@ export const DetailContent = styled.div`
   }
   .border {
     margin: 0 0 20px;
-    border: 1px solid #ddd;
+    border: .3px solid #ddd;
   }
 `;

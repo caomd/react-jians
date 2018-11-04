@@ -45,7 +45,4 @@ const mapStateToProps = (state) => ({
   //topicList: state.getIn(['home', 'topicList'])
   topicList: state.get('home').get('topicList')
 });
-const mapDispatchToprops = (dispatch) => ({
-
-});
-export default connect (mapStateToProps, mapDispatchToprops)(Topic);
+export default connect (mapStateToProps, null)(Topic);

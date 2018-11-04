@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-class Writer extends PureComponent{
+class Write extends PureComponent{
   render(){
-    const {loginStatus} = this.props;
-    if(loginStatus){
+    const {login} = this.props;
+    if(login){
       return(
         <div>写文章</div>
       )
@@ -14,6 +14,6 @@ class Writer extends PureComponent{
   }
 }
 const mapStatetoProps = (state) => ({
-  loginStatus: state.getIn(['login','login'])
+  login: state.getIn(['login','login'])
 });
-export default connect(mapStatetoProps, null)(Writer);
+export default connect(mapStatetoProps, null)(Write);

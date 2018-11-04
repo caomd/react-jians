@@ -145,6 +145,7 @@ export const Button = styled.div`
   }
 `;
 export const SearchWrapper = styled.div`
+  z-index: 1;
   position: relative;
   float: left;
   .zoom {

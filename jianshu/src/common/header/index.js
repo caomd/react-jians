@@ -1,4 +1,5 @@
-import React ,{ Component } from 'react';
+import React ,{ PureComponent } from 'react';
+import { actionCreators as loginActionCreators } from '../../pages/login/store';
 //import { changeInputFocused, changInputBlur } from '../../store/actionCreators';
 //import * as actionCreators from '../../store/actionCreators';
 import { actionCreators } from './store'
@@ -20,6 +21,7 @@ import {
   SearchList,
   SearchWrapper
 } from "./style";
+import {changeLoginStatus} from "../../pages/login/store/actionCreators";
 // const getSearchItem = (show) => {
 //   if(show) {
 //     return (
@@ -82,7 +84,7 @@ import {
 //     </HeaderWrapper>
 //   )
 // }
-class Header extends Component{
+class Header extends PureComponent{
   getSearchItem = () => {
     const {focused, list, page, rotateIcon, totalPage, mouseEnter, mouseIn, mouseLeave, handleSwitch} = this.props;
     const pageList = [];
@@ -127,7 +129,7 @@ class Header extends Component{
     }
   };
   render() {
-    const {focused,list, handleInputFocus,handleInputBlur} = this.props;
+    const {focused,list, handleInputFocus,handleInputBlur,login,out} = this.props;
     return (
       <HeaderWrapper>
         <Link to="/"><Logo/></Link>
@@ -151,14 +153,21 @@ class Header extends Component{
               this.getSearchItem()
             }
           </SearchWrapper>
-          <NavItem className="right">登录</NavItem>
+          {
+            login?
+              <NavItem className="right" onClick={out}>退出</NavItem>
+              :
+              <Link to="/login"><NavItem className="right">登录</NavItem></Link>
+          }
           <NavItem className="right">
             <i className="iconfont">&#xe636;</i>
           </NavItem>
           <Addition>
-            <Button className="writting">
-              <i className="iconfont">&#xe6a5;</i>
-              写文章</Button>
+            <Link to='/write'>
+              <Button className="writting">
+                <i className="iconfont">&#xe6a5;</i>
+                写文章</Button>
+            </Link>
             <Button className="reg">注册</Button>
           </Addition>
         </Nav>
@@ -179,7 +188,8 @@ const mapStateToProps = (state) => ({
   page: state.getIn(['header','page']),
   totalPage: state.getIn(['header','totalPage']),
   mouseIn: state.getIn(['header', 'mouseIn']),
-  rotateIcon: state.getIn(['header', 'rotateIcon'])
+  rotateIcon: state.getIn(['header', 'rotateIcon']),
+  login: state.getIn(['login', 'login'])
   //}
 });
 const mapDispatchToProps = (dispatch) => ({
@@ -202,6 +212,9 @@ const mapDispatchToProps = (dispatch) => ({
   mouseLeave() {
     const action = actionCreators.mouseLeave();
     dispatch(action);
+  },
+  out(){
+    dispatch(loginActionCreators.changeLoginStatus(false));
   },
   handleSwitch(page, totalPage, rotateIcon) {
       //console.log(rotateIcon);
